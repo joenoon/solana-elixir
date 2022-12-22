@@ -66,7 +66,7 @@ defmodule Solana.RPC do
   Sends the provided requests to the configured Solana RPC endpoint.
   """
   def send(client, requests) do
-    Tesla.post(client, "/", Solana.RPC.Request.encode(requests))
+    Tesla.post(client, "", Solana.RPC.Request.encode(requests))
   end
 
   @doc """
