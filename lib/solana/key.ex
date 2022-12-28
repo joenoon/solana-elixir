@@ -36,6 +36,22 @@ defmodule Solana.Key do
   end
 
   @doc """
+  Reads a public/private key pair from a Base58 secret string.
+  Returns `{:ok, pair}` if successful, or `{:error,
+  reason}` if not.
+  """
+  @spec pair_from_b58(String.t()) :: {:ok, pair} | {:error, term}
+  def pair_from_b58(b58) do
+    with {:ok, bin} <- B58.decode58(b58),
+         <<sk::binary-size(32), pk::binary-size(32)>> <- bin do
+      {:ok, {sk, pk}}
+    else
+      {:error, _} = error -> error
+      _contents -> {:error, "invalid secret format"}
+    end
+  end
+
+  @doc """
   decodes a base58-encoded key and returns it in a tuple.
 
   If it fails, return an error tuple.
